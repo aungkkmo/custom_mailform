@@ -25,6 +25,7 @@ call_user_func(function(){
 function prepare(){
   // echo "prepare";
 
+
   $data=$GLOBALS['data'];
   foreach ($data['checkbox'] as $value) {
     echo $value;
