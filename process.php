@@ -56,7 +56,7 @@ confirmation($data);
 }
 
 function file_upload(){
-  $target_dir = $_SERVER['SERVER_NAME']."/uploads/";
+  $target_dir = getBaseUrl() ."uploads/";
   $target_file = $target_dir . uniqid()."_".basename($_FILES["image"]["name"]);
   $uploadOk = 1;
   $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
@@ -72,6 +72,24 @@ function file_upload(){
           return false;
       }
   
+}
+
+function getBaseUrl() 
+{
+    // output: /myproject/index.php
+    $currentPath = $_SERVER['PHP_SELF']; 
+    
+    // output: Array ( [dirname] => /myproject [basename] => index.php [extension] => php [filename] => index ) 
+    $pathInfo = pathinfo($currentPath); 
+    
+    // output: localhost
+    $hostName = $_SERVER['HTTP_HOST']; 
+    
+    // output: http://
+    $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https://'?'https://':'http://';
+    
+    // return: http://localhost/myproject/
+    return $protocol.$hostName.$pathInfo['dirname'];
 }
 
 function confirmation($data){
