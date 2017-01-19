@@ -56,7 +56,7 @@ confirmation($data);
 }
 
 function file_upload(){
-  $target_dir = "/uploads/";
+  $target_dir = $_SERVER['SERVER_NAME']."uploads/";
   $target_file = $target_dir . uniqid()."_".basename($_FILES["image"]["name"]);
   $uploadOk = 1;
   $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
