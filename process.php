@@ -101,33 +101,27 @@ function confirmation($data){
 
 function send_email(){
 
-  $files= glob('uploads/');
+  $files= glob('uploads/*');
 
+  foreach($files as $file)
+  { 
+      // iterate files
+      if(is_file($file))
+        unlink($file); // delete file
+  }
+
+
+
+    // $email_to = $data['email_to'];
  
+    // $email_subject = "Your email subject line";
 
-    $data=$GLOBALS['data'];
-
-    $email_to = $data['email_to'];
+    // $headers = 'From: '.$email_from."\r\n".
  
-    $email_subject = "Your email subject line";
-
-    $headers = 'From: '.$email_from."\r\n".
- 
-    'Reply-To: '.$email_from."\r\n" .
+    // 'Reply-To: '.$email_from."\r\n" .
      
-    'X-Mailer: PHP/' . phpversion();
+    // 'X-Mailer: PHP/' . phpversion();
      
-    if(mail($email_to, $email_subject, $email_message, $headers)){
-       foreach($files as $file)
-          { 
-              // iterate files
-              if(is_file($file))
-                unlink($file); // delete file
-        }
-
-        return true;
-    }else{
-      die();
-    }  
+    // @mail($email_to, $email_subject, $email_message, $headers);  
  
 }

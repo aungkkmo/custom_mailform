@@ -11,6 +11,8 @@ if(isset($_POST['state']) && $_POST['state']="success"){
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE" />
+
   <title>MAIL FORM</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
@@ -19,6 +21,9 @@ if(isset($_POST['state']) && $_POST['state']="success"){
       color: #f00;
       font-size: 11px;
       font-style: italic;
+    }
+   textarea {
+        resize: none;
     }
   </style>
 </head>
@@ -159,25 +164,25 @@ if(isset($_POST['state']) && $_POST['state']="success"){
   });
 </script>
 <script>
-//   $('form').validate({
+  $('form').validate({
 
-//   showErrors: function(errorMap, errorList) {
-//         // Do nothing here
-//     },
-//   rules : {
-//     "checkbox[]": { 
-//       required: true, 
-//       minlength: 1 
-//     }
-//   },
-//    messages: {            
-//         'checkbox[]': {
-//             required: function(){
-//               $('#error').html("&#8657; Please Check At Least One");
-//             }
-//         },
-//     }
-// });
+  showErrors: function(errorMap, errorList) {
+        // Do nothing here
+    },
+  rules : {
+    "checkbox[]": { 
+      required: true, 
+      minlength: 1 
+    }
+  },
+   messages: {            
+        'checkbox[]': {
+            required: function(){
+              $('#error').html("&#8657; Please Check At Least One");
+            }
+        },
+    }
+});
 </script>
 </body>
 </html>
