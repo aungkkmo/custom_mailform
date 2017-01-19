@@ -56,7 +56,7 @@ confirmation($data);
 }
 
 function file_upload(){
-  $target_dir = getBaseUrl() ."uploads/";
+  $target_dir = "uploads/";
   $target_file = $target_dir . uniqid()."_".basename($_FILES["image"]["name"]);
   $uploadOk = 1;
   $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
@@ -101,27 +101,33 @@ function confirmation($data){
 
 function send_email(){
 
-  $files= glob('uploads/*');
+  $files= glob('uploads/');
 
-  foreach($files as $file)
-  { 
-      // iterate files
-      if(is_file($file))
-        unlink($file); // delete file
-  }
-
-
-
-    // $email_to = $data['email_to'];
  
-    // $email_subject = "Your email subject line";
 
-    // $headers = 'From: '.$email_from."\r\n".
+    $data=$GLOBALS['data'];
+
+    $email_to = $data['email_to'];
  
-    // 'Reply-To: '.$email_from."\r\n" .
+    $email_subject = "Your email subject line";
+
+    $headers = 'From: '.$email_from."\r\n".
+ 
+    'Reply-To: '.$email_from."\r\n" .
      
-    // 'X-Mailer: PHP/' . phpversion();
+    'X-Mailer: PHP/' . phpversion();
      
-    // @mail($email_to, $email_subject, $email_message, $headers);  
+    if(mail($email_to, $email_subject, $email_message, $headers)){
+       foreach($files as $file)
+          { 
+              // iterate files
+              if(is_file($file))
+                unlink($file); // delete file
+        }
+
+        return true;
+    }else{
+      die();
+    }  
  
 }
