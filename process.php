@@ -1,13 +1,36 @@
 <?php
- 
-// $data=[];
+    
+    $action=isset($_POST['action']);
+    $status=isset($_POST['status']);
+
+    if(isset($action) && $action=="send_email"){
+      // $data=$GLOBALS['data'];
+      send_email();
+      die();
+    }
+
+
+
+    $name = isset($_POST['name']);
+    $email = isset($_POST['email']);
+    $checkbox = $_POST['checkbox'];
+    $radio1 = isset($_POST['radio1']);
+    $radio2 = isset($_POST['radio2']);
+    $radio3 =isset($_POST['radio3']);
+    $email_to= "aungkoko.aidma@gmail.com";
+    $email_subject=isset($_POST['subject']);
+    $option=isset($_POST['option']);
    
 $data=[
-    'name' => $_POST['name'],
-    'email' => $_POST['email'],
-    'checkbox' => $_POST['checkbox'],
-    'email_to'=> "you@yourdomain.com",
-    'email_subject'=>$_POST['subject'],
+    'name' => $name,
+    'email' => $email,
+    'checkbox' => $checkbox,
+    'radio1' => $radio1,
+    'radio2' => $radio2,
+    'radio3' => $radio3,
+    'email_to'=> $email_to,
+    'email_subject'=>$email_subject,
+    'option'=>$option
   ];
 
 call_user_func(function(){
@@ -24,12 +47,9 @@ call_user_func(function(){
 
 function prepare(){
   // echo "prepare";
-
-
   $data=$GLOBALS['data'];
-  foreach ($data['checkbox'] as $value) {
-    echo $value;
-  }
+
+confirmation($data);
 
 
   // var_dump($GLOBALS['data']);
@@ -59,18 +79,31 @@ function confirmation($data){
 
 }
 
-function send_email($data){
 
-    $email_to = $data['email_to'];
- 
-    $email_subject = "Your email subject line";
 
-    $headers = 'From: '.$email_from."\r\n".
+function send_email(){
+
+  $files= glob('uploads/*');
+
+  foreach($files as $file)
+  { 
+      // iterate files
+      if(is_file($file))
+        unlink($file); // delete file
+  }
+
+
+
+    // $email_to = $data['email_to'];
  
-    'Reply-To: '.$email_from."\r\n" .
+    // $email_subject = "Your email subject line";
+
+    // $headers = 'From: '.$email_from."\r\n".
+ 
+    // 'Reply-To: '.$email_from."\r\n" .
      
-    'X-Mailer: PHP/' . phpversion();
+    // 'X-Mailer: PHP/' . phpversion();
      
-    @mail($email_to, $email_subject, $email_message, $headers);  
+    // @mail($email_to, $email_subject, $email_message, $headers);  
  
 }
