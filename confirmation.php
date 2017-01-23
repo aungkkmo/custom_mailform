@@ -117,16 +117,16 @@
     $('#confirm').click(function(){
       var url= $("#url").val();
       var formData=<?php echo json_encode($data) ?>;
-      console.log(formData)
-      console.log(url);
+      // console.log(formData)
+      // console.log(url);
       $.ajax({
         url: url,
         data:{action:"send_email",formData:formData},
         type:"post",  
         success:function(response){
           // location.href = '/'.+ "sa";
-          console.log(response);
-          // $.redirect('/', {'state': 'success'});
+          // console.log(response);
+          $.redirect('/', {'state': 'success'});
         }
       });
     });
