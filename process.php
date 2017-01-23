@@ -1,25 +1,33 @@
 <?php
     
+    // Accpet Action From Confirmation.php
+
     $action=isset($_POST['action']);
     $status=isset($_POST['status']);
 
+    if(isset($_POST['formData'])){
+      $formData=$_POST['formData'];
+    }
+    
     if(isset($action) && $action=="send_email"){
-      // $data=$GLOBALS['data'];
-      send_email();
+   
+      send_email($formData);
+     
       die();
     }
 
 
-
-    $name = isset($_POST['name']);
-    $email = isset($_POST['email']);
+// Prepare Data
+    $name = $_POST['name'];
+    $email = $_POST['email'];
     $checkbox = $_POST['checkbox'];
     $radio1 = isset($_POST['radio1']);
     $radio2 = isset($_POST['radio2']);
     $radio3 =isset($_POST['radio3']);
     $email_to= "aungkoko.aidma@gmail.com";
-    $email_subject=isset($_POST['subject']);
-    $option=isset($_POST['option']);
+    $email_subject=$_POST['subject'];
+    $option=$_POST['option'];
+    $message="This is Test";
    
 $data=[
     'name' => $name,
@@ -30,9 +38,12 @@ $data=[
     'radio3' => $radio3,
     'email_to'=> $email_to,
     'email_subject'=>$email_subject,
-    'option'=>$option
+    'option'=>$option,
+    'message'=>$message
   ];
 
+
+// Initial Function
 call_user_func(function(){
 
   if(isset($_FILES['image'])){
@@ -44,17 +55,16 @@ call_user_func(function(){
   
 });
 
-
+// Set Data
 function prepare(){
   // echo "prepare";
   $data=$GLOBALS['data'];
 
 confirmation($data);
-
-
-  // var_dump($GLOBALS['data']);
 }
 
+
+// File Check
 function file_upload(){
   $target_dir = "uploads/";
   $target_file = $target_dir . uniqid()."_".basename($_FILES["image"]["name"]);
@@ -74,33 +84,75 @@ function file_upload(){
   
 }
 
-function getBaseUrl() 
-{
-    // output: /myproject/index.php
-    $currentPath = $_SERVER['PHP_SELF']; 
-    
-    // output: Array ( [dirname] => /myproject [basename] => index.php [extension] => php [filename] => index ) 
-    $pathInfo = pathinfo($currentPath); 
-    
-    // output: localhost
-    $hostName = $_SERVER['HTTP_HOST']; 
-    
-    // output: http://
-    $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https://'?'https://':'http://';
-    
-    // return: http://localhost/myproject/
-    return $protocol.$hostName.$pathInfo['dirname'];
-}
-
+// Confirmation
 function confirmation($data){
   include('confirmation.php');
 
 }
 
+// Mail Send
+function send_email($formData){
+  
+/* Email Detials */
 
+  $mail_to = $formData['email_to'];
+  $from_mail = $formData['email'];
+  $from_name = $formData['name'];
+  $reply_to = $formData['email'];
+  $subject = $formData['email_subject'];
+  $message = $formData['message'];
+ 
+/* Attachment File */
+  // Attachment location
+  $file_name = $formData['image'];
+  // $path = $file_name;
+   
+  // Read the file content
+  $file = $file_name;
+  $file_size = filesize($file);
+  $handle = fopen($file, "r");
+  $content = fread($handle, $file_size);
+  fclose($handle);
+  $content = chunk_split(base64_encode($content));
+   
+/* Set the email header */
+  // Generate a boundary
+  $boundary = md5(uniqid(time()));
+   
+  // Email header
+  $header = "From: ".$from_name." <".$from_mail.">".PHP_EOL;
+  $header .= "Reply-To: ".$reply_to.PHP_EOL;
+  $header .= "MIME-Version: 1.0".PHP_EOL;
+   
+  // Multipart wraps the Email Content and Attachment
+  $header .= "Content-Type: multipart/mixed; boundary=\"".$boundary."\"".PHP_EOL;
+  $header .= "This is a multi-part message in MIME format.".PHP_EOL;
+  $header .= "--".$boundary.PHP_EOL;
+   
+  // Email content
+  // Content-type can be text/plain or text/html
+  $header .= "Content-type:text/plain; charset=iso-8859-1".PHP_EOL;
+  $header .= "Content-Transfer-Encoding: 7bit".PHP_EOL.PHP_EOL;
+  $header .= "$message".PHP_EOL;
+  $header .= "--".$boundary.PHP_EOL;
+   
+  // Attachment
+  // Edit content type for different file extensions
+  $header .= "Content-Type: application/xml; name=\"".$file_name."\"".PHP_EOL;
+  $header .= "Content-Transfer-Encoding: base64".PHP_EOL;
+  $header .= "Content-Disposition: attachment; filename=\"".$file_name."\"".PHP_EOL.PHP_EOL;
+  $header .= $content.PHP_EOL;
+  $header .= "--".$boundary."--";
+   
+  // Send email
+  if (mail($mail_to, $subject,$message, $header)) {
+    clearFiles();
+  } else {
+    echo "Error";
+  }
+}
 
-function send_email(){
-
+function clearFiles(){
   $files= glob('uploads/*');
 
   foreach($files as $file)
@@ -109,19 +161,4 @@ function send_email(){
       if(is_file($file))
         unlink($file); // delete file
   }
-
-
-
-    // $email_to = $data['email_to'];
- 
-    // $email_subject = "Your email subject line";
-
-    // $headers = 'From: '.$email_from."\r\n".
- 
-    // 'Reply-To: '.$email_from."\r\n" .
-     
-    // 'X-Mailer: PHP/' . phpversion();
-     
-    // @mail($email_to, $email_subject, $email_message, $headers);  
- 
 }
