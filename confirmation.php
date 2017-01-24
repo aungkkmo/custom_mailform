@@ -103,10 +103,11 @@
             </tr>
           </tfoot>
         </table>
-      </div>
-    </div>
-  </div>
+      </div><!--col-md-8 col-md-offset-->
+    </div><!--row -->
+  </div><!-- Container　-->
   <input type="hidden" value="<?php echo $_SERVER['PHP_SELF'];?>" id="url">
+  <input type="hidden" value="<?php echo $data['redirectTo'];?>" id="redirect">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
@@ -117,21 +118,18 @@
     $('#confirm').click(function(){
       var url= $("#url").val();
       var formData=<?php echo json_encode($data) ?>;
-      // console.log(formData)
-      // console.log(url);
+      var redirect=$("#redirect").val();
+    
       $.ajax({
         url: url,
         data:{action:"send_email",formData:formData},
         type:"post",  
         success:function(response){
-          // location.href = '/'.+ "sa";
-          // console.log(response);
-          $.redirect('/', {'state': 'success'});
+          $.redirect(redirect, {'state': 'success'});
         }
       });
     });
 
-    
   </script>
 </body>
 </html>

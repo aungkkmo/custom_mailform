@@ -4,7 +4,6 @@ if(isset($_POST['state']) && $_POST['state']="success"){
   $state=1;
 }
 
-
 ?>
 
 <!DOCTYPE html>
@@ -19,11 +18,18 @@ if(isset($_POST['state']) && $_POST['state']="success"){
   <style>
     #error{
       color: #f00;
-      font-size: 11px;
       font-style: italic;
     }
    textarea {
         resize: none;
+    }
+    .checkbox label.error {
+      display: none !important;
+    }
+    .error{
+      /*line-height: 1.5em;*/
+      padding-top: 5px;
+      color:#f00;
     }
   </style>
 </head>
@@ -39,12 +45,12 @@ if(isset($_POST['state']) && $_POST['state']="success"){
 
                   <div class="form-group">
                     <label for="exampleInputName">Name</label>
-                    <input type="text" name="name" class="form-control" id="exampleInputName" placeholder="Name" required>
+                    <input type="text" name="name" class="form-control" id="exampleInputName" placeholder="Name" >
                   </div>
 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Email" required>
+                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Email" >
                   </div>
 
               
@@ -55,7 +61,7 @@ if(isset($_POST['state']) && $_POST['state']="success"){
                         <img src="http://placehold.it/200x150" alt="">
                       </div>
                       <div>
-                        <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="image" required></span>
+                        <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="image"></span>
                         <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
                       </div>
                     </div>
@@ -63,7 +69,13 @@ if(isset($_POST['state']) && $_POST['state']="success"){
                  
                   <div class="form-group">
                     <label for="exampleInputSubject">Subject</label>
-                    <textarea class="form-control" rows="3" name="subject"></textarea>
+                    <input type="text" name="subject" class="form-control" id="exampleInputName" placeholder="Name" required>
+
+                  </div>
+
+                  <div class="form-group">
+                    <label for="exampleInputSubject">Message</label>
+                    <textarea class="form-control" rows="3" name="message" placeholder="Something Here..."></textarea>
 
                   </div>
 
@@ -90,9 +102,9 @@ if(isset($_POST['state']) && $_POST['state']="success"){
                       <input type="checkbox" name="checkbox[]" value="D"> Check me out
                     </label>
                   </div>
+
                   <div class="form-group">
-                    <span id="error"></span>
-                    
+                    <span id="error"></span>                
                   </div>
 
                   <div class="radio">
@@ -165,11 +177,14 @@ if(isset($_POST['state']) && $_POST['state']="success"){
 </script>
 <script>
   $('form').validate({
-
-  showErrors: function(errorMap, errorList) {
-        // Do nothing here
-    },
   rules : {
+    name: "required",
+    email:{
+      required:true,
+      email:true,
+    },
+    subject:"required",
+    message:"required",
     "checkbox[]": { 
       required: true, 
       minlength: 1 
