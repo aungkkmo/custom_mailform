@@ -126,6 +126,7 @@
         type:"post",  
         success:function(response){
           $.redirect(redirect, {'state': 'success'});
+          // console.log(response);
         }
       });
     });

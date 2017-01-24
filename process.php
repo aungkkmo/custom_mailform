@@ -39,7 +39,6 @@
   // Accpet Action From Confirmation.php
 
     $action=isset($_POST['action']);
-    $status=isset($_POST['status']);
 
     if(isset($_POST['formData'])){
       $formData=$_POST['formData'];
@@ -47,7 +46,8 @@
     
     if(isset($action) && $action=="send_email"){
       send_email($formData);
-      die('Oops Something wrong!!!');
+       
+      die('Success');
     }
 
 
@@ -137,13 +137,14 @@
   // Mail Send
   function send_email($formData){
 
-  /* Email Detials */
+  /* Email Details */
+  // var_dump($formData);die();
 
-    $mail_to = $formData['email_to'];
+    $mail_to = $formData['email'];
     $from_mail = $formData['email'];
     $from_name = $formData['name'];
     $reply_to = $formData['email'];
-    $subject = $formData['email_subject'];
+    $subject = $formData['subject'];
     $message = $formData['message'];
     $image=$formData['image'];
    
@@ -152,7 +153,7 @@
     $mail = new PHPMailer;
 
 
-    $mail->From =$mail;
+    $mail->From =$from_mail;
     $mail->FromName = $from_name;
     $mail->addAddress($mail_to);     // Add a recipient
                                     // Name is optional
@@ -168,6 +169,7 @@
     if(!$mail->send()) {
         echo 'Message could not be sent.';
         echo 'Mailer Error: ' . $mail->ErrorInfo;
+
     } else {
         // echo 'Message has been sent';
       clearFiles();
