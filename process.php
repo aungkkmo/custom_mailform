@@ -148,7 +148,7 @@
     $message = $formData['message'];
     $image=$formData['image'];
    
-    require 'PHPMailer/PHPMailerAutoload.php';
+    require 'PHPMailerAutoload.php';
 
     $mail = new PHPMailer;
 

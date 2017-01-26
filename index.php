@@ -1,10 +1,9 @@
-<?php 
+<?php if(isset($_POST['state']) && $_POST['state']="success"){$state=1;}?>
 
-if(isset($_POST['state']) && $_POST['state']="success"){
-  $state=1;
-}
 
-?>
+<?php  require 'validate.php'; ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +39,7 @@ if(isset($_POST['state']) && $_POST['state']="success"){
            <div class="panel panel-primary">
              <div class="panel panel-heading">Send Email</div>
              <div class="panel panel-body">
-                <form action="process.php" method="post" enctype="multipart/form-data">
+                <form action="" method="post" enctype="multipart/form-data">
 
 
                   <div class="form-group">
